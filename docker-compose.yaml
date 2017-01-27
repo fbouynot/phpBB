@@ -9,9 +9,9 @@ services:
         links:
             - forum-mariadb
         volumes:
-            - ./www:/usr/share/nginx/html:z
-            - ./php-conf/php.ini:/usr/local/etc/php/php.ini:z
-            - ./php/php_errors.log:/usr/local/etc/php/php_errors.log:z
+            - ./www:/usr/share/nginx/html:rw
+            - ./php-conf/php.ini:/usr/local/etc/php/php.ini:ro
+            - ./php/php_errors.log:/usr/local/etc/php/php_errors.log:rw
     forum-nginx:
         build:
             context: ./nginx
@@ -19,10 +19,10 @@ services:
         links:
             - forum-php
         volumes:
-            - ./www-conf:/etc/nginx/conf.d:z
-            - ./www:/usr/share/nginx/html:z
-            - ./nginx/access.log:/usr/share/nginx/access.log:z
-            - ./nginx/error.log:/usr/share/nginx/error.log:z
+            - ./www-conf:/etc/nginx/conf.d:ro
+            - ./www:/usr/share/nginx/html:ro
+            - ./nginx/access.log:/usr/share/nginx/access.log:rw
+            - ./nginx/error.log:/usr/share/nginx/error.log:rw
         ports:
             - "80:80"
     forum-mariadb:
@@ -34,5 +34,5 @@ services:
             - MYSQL_USER=mybb_mariadb_operator
             - MYSQL_PASSWORD=
         volumes:
-            - ./db:/var/lib/mysql:z
+            - ./db:/var/lib/mysql:rw
 
