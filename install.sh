@@ -1,27 +1,23 @@
 #!/bin/bash
 
-# Nettoyage, au cas ou ce n est pas la premiere execution du script
-echo "Nettoyage..."
+# Cleanup and pre-install
+echo "Cleanup..."
 apt install unzip
 rm -Rf db
 rm -Rf www
 
-# Telechargement
-echo "Telechargement..."
+# Download
+echo "Download..."
 wget http://www.phpbb-fr.com/telechargements/full/phpBB-3.2.0_FR.zip
 
-# Decompression et gestion des droits
-echo "Decompression..."
+# Unzip
+echo "Unzip..."
 unzip phpBB-3.2.0_FR.zip -d tmp
 mkdir www
 mkdir db
 mv tmp/phpBB3/* www
 
-# Gestion des droits
-# Les fichiers sont possedes par l utilisateur de php et le groupe de nginx
-# On s assure que php et nginx n aient que les droits en lecture sur les fichiers, et en exec$
-# On ajoute les droits en ecriture pour php sur les dossiers cache, store, files, avatar-uplo$
-# De cette maniere, other n a aucun droit
+# Right permissions
 
 chown -R 901:902 www
 
@@ -37,4 +33,3 @@ chmod -R u+w ./www/images/avatars/upload
 # Cleanup
 rm -Rf tmp
 rm phpBB-3.2.0_FR.zip
-
