@@ -1,0 +1,38 @@
+---
+version: '2'
+
+services:
+    forum-php:
+        build:
+            context: ./php
+        restart: always
+        links:
+            - forum-mariadb
+        volumes:
+            - ./www:/usr/share/nginx/html:z
+            - ./php-conf/php.ini:/usr/local/etc/php/php.ini:z
+            - ./php/php_errors.log:/usr/local/etc/php/php_errors.log:z
+    forum-nginx:
+        build:
+            context: ./nginx
+        restart: always
+        links:
+            - forum-php
+        volumes:
+            - ./www-conf:/etc/nginx/conf.d:z
+            - ./www:/usr/share/nginx/html:z
+            - ./nginx/access.log:/usr/share/nginx/access.log:z
+            - ./nginx/error.log:/usr/share/nginx/error.log:z
+        ports:
+            - "80:80"
+    forum-mariadb:
+        image: mariadb:latest
+        restart: always
+        environment:
+            - MYSQL_ROOT_PASSWORD=
+            - MYSQL_DATABASE=mybbdb
+            - MYSQL_USER=mybb_mariadb_operator
+            - MYSQL_PASSWORD=
+        volumes:
+            - ./db:/var/lib/mysql:z
+
