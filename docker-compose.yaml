@@ -3,6 +3,7 @@ version: '2'
 
 services:
     forum-php:
+        container_name: forum-php
         build:
             context: ./php
         restart: always
@@ -13,6 +14,7 @@ services:
             - ./php-conf/php.ini:/usr/local/etc/php/php.ini:ro
             - ./php/php_errors.log:/usr/local/etc/php/php_errors.log:rw
     forum-nginx:
+        container_name: forum-nginx
         build:
             context: ./nginx
         restart: always
@@ -26,6 +28,7 @@ services:
         ports:
             - "80:80"
     forum-mariadb:
+        container_name: forum-mariadb
         image: mariadb:latest
         restart: always
         environment:
